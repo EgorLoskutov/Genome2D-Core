@@ -1,6 +1,56 @@
 Genome2D Changelog
 ===================
 
+FIXES within 1.1 alpha phase
+--------------------------
+1.1.294
+- FIXED GStats now working
+- FIXED default variables within framework now initialized correctly, for example renderables blendmode now default NORMAL instead of NONE as expection
+- FIXED fast memory enabled
+
+version 1.1.293 - 2014-1-1
+--------------------------
+- CHECK hierarchical AABB masking for nonconsecutively masked hierarchy
+- CHANGED GTileMap setTiles p_tiles argument is now optional and it will generate null map for you
+- CHANGED GTileMap setTile will now set multi tile size tiles to all their indices automatically
+- CHANGED IContext begin call now returns boolean which indicates that context was able to start rendering (no context loss)
+- CHANGED GContextCamera renamed to GCamera
+- CHANGED moved GScreenManager functionality to GCamera as viewport, can be also set through GCameraController setViewport.
+- CHANGED some of the util classes moved to the common repository
+- CHANGED GComponentMacro to MGPrototypeProcessor from now on all macros will start with M and also this macro is now used for more than just components
+- CHANGED IGPrototypable moved from components to utils
+- ADDED prototypable support for inheritance chain variables and properties
+- ADDED support for mouse signal in GTileMap
+- ADDED contextSignal property to GNodeMouseSignal to reference the original context mouse signal
+- ADDED onPlaybackEnd signal for GMovieClip to dispatch when nonrepeatable movieclip animation ends
+- ADDED getActiveCamera method to IContext
+- FIXED incorrect calculation of UV coordinates using different scalefactors
+- FIXED setting a camera will set scissoring even for fullscreen as there seem to be Stage3D bug when using null
+- FIXED crash when trying to calculate animated frame for GTile reentering viewport from outside while having reversed playback
+- FIXED minor changes to context loss handling and pipeline propagation fixing problems with context loss in some cases (GShape, drawPoly etc.)
+
+version 1.0.279 - 2014-10-19
+--------------------------
+
+- ADDED support for content scale factor, now all texture factory methods contain scale factor parameter
+- ADDED GScreenManager component for easy management of virtual screens
+- ADDED GSimpleParticle now contains texture information which enables GSimpleParticleSystem to force burst particles with different textures
+- CHANGED moved all classes that are not components out of the com.genome2d.components package to their own packages
+- CHANGED GTextureText was now divided to GTextureTextRenderer which handles the actual rendering and GText which is a component managing it, this way you can render such text even without using node/component system (further changes still coming)
+
+version 1.0.277 - 2014-09-15
+--------------------------
+
+- ADDED support for pivots in drawSource calls
+- ADDED support for rendering specific camera in Genome2D render call, used for multilayering 3rd party frameworks
+- ADDED support for nested render to texture calls
+- ADDED post processes can now be used hierarchically and nested within each other
+- ADDED GTiledSprite, GSlice3Sprite, GSlice9Sprite renderable components
+
+- FIXED problem with camera invalidation in some cases, for example with usage of 3rd party frameworks
+- FIXED GTexture gpuWidth/Height now correctly invalidates when changing region
+- FIXED batching now correctly works with consequent drawSource call on same texture with different source rectangle
+
 version 1.0.274 - 2014-08-16
 --------------------------
 

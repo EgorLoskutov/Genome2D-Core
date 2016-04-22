@@ -7,20 +7,18 @@
  *	License:: ./doc/LICENSE.md (https://github.com/pshtif/Genome2D/blob/master/LICENSE.md)
  */
 package com.genome2d.node;
-
-import com.genome2d.node.factory.GNodeFactory;
+import com.genome2d.proto.GPrototype;
 
 /**
-    Node pool based on prototypes
+    Node pool based on proto
 **/
-@:allow(com.genome2d.node.GNode)
 @:access(com.genome2d.node.GNode)
 class GNodePool
 {
 	private var g2d_first:GNode;
 	private var g2d_last:GNode;
 	
-	private var g2d_prototype:Xml;
+	private var g2d_prototype:GPrototype;
 	
 	private var g2d_maxCount:Int;
 	
@@ -29,7 +27,7 @@ class GNodePool
         return g2d_cachedCount;
     }
 
-	public function new(p_prototype:Xml, p_maxCount:Int = 0, p_precacheCount:Int = 0) {
+	public function new(p_prototype:GPrototype, p_maxCount:Int = 0, p_precacheCount:Int = 0) {
 		g2d_prototype = p_prototype;
 		g2d_maxCount = p_maxCount;
 		
@@ -45,10 +43,17 @@ class GNodePool
 			node = g2d_createNew();
 		} else {
 			node = g2d_first;
+            g2d_putToBack(node);
 			node.setActive(true);
 		}
 		return node;
 	}
+
+    public function recycle(p_node:GNode, p_reset:Bool = false):Void {
+        p_node.setActive(false);
+        p_node.bindPrototype(g2d_prototype);
+        g2d_putToFront(p_node);
+    }
 
 	private function g2d_putToFront(p_node:GNode):Void {
 		if (p_node == g2d_first) return;
@@ -80,7 +85,7 @@ class GNodePool
 		var node:GNode = null;
 		if (g2d_maxCount == 0 || g2d_cachedCount < g2d_maxCount) {
 			g2d_cachedCount++;
-			node = GNodeFactory.createFromPrototype(g2d_prototype);
+			node = GNode.createFromPrototype(g2d_prototype);
 			if (p_precache) node.setActive(false);
 			node.g2d_pool = this;
 			
